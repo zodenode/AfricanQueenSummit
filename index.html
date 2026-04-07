@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Royal Itinerary | African Queen Summit 2026</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --emerald: #043927;
+            --black: #0A0A0A;
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--black);
+            color: #fff;
+            overflow-x: hidden;
+        }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+
+        .gold-text { color: var(--gold); }
+        .bg-emerald { background-color: var(--emerald); }
+        
+        .timeline-line {
+            width: 2px;
+            background: linear-gradient(to bottom, var(--gold), transparent);
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            height: 100%;
+            z-index: 0;
+        }
+
+        .itinerary-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            backdrop-filter: blur(10px);
+            transition: all 0.5s ease;
+        }
+
+        .itinerary-card:hover {
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.05);
+        }
+
+        .parallax-img {
+            filter: grayscale(30%) brightness(80%);
+            transition: filter 0.5s ease;
+        }
+
+        .parallax-img:hover {
+            filter: grayscale(0%) brightness(100%);
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="fixed w-full z-50 p-6 flex justify-between items-center bg-black/80 backdrop-blur-md border-b border-white/10">
+        <div class="text-xl font-bold tracking-[0.3em] gold-text">AQS • 2026</div>
+        <div class="space-x-6 text-xs uppercase tracking-widest">
+            <a href="#welcome" class="hover:text-[#D4AF37]">Arrival</a>
+            <a href="#itinerary" class="hover:text-[#D4AF37]">Timeline</a>
+            <a href="#showcase" class="hover:text-[#D4AF37]">Culture</a>
+        </div>
+    </nav>
+
+    <section class="h-[80vh] flex flex-col justify-center items-center text-center px-4 relative overflow-hidden">
+        <div class="absolute inset-0 opacity-40">
+            <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="London Skyline">
+        </div>
+        <div class="relative z-10" id="hero-text">
+            <h1 class="text-5xl md:text-8xl mb-4">The Royal <span class="gold-text">Itinerary</span></h1>
+            <p class="text-xl tracking-widest font-light">Oxford & London | August 14 — 25, 2026</p>
+        </div>
+    </section>
+
+    <section id="welcome" class="py-20 px-8 bg-emerald relative">
+        <div class="max-w-4xl mx-auto text-center" id="welcome-content">
+            <h2 class="text-4xl mb-6">The Grand Arrival</h2>
+            <p class="text-lg text-gray-200 leading-relaxed">
+                Your journey begins on <strong>August 14th</strong>. As you touch down in the UK, the "Welcome to the Throne" gala kicks off a 48-hour celebration across London and Oxford, setting the stage for a week of dominance and enlightenment.
+            </p>
+        </div>
+    </section>
+
+    <section id="itinerary" class="py-24 relative px-4">
+        <div class="timeline-line"></div>
+        
+        <div class="max-w-5xl mx-auto">
+            
+            <div class="flex flex-col md:flex-row items-center mb-24 reveal-item">
+                <div class="md:w-1/2 md:pr-12 text-right hidden md:block">
+                    <img src="https://images.unsplash.com/photo-1531050171651-a3a7a7a9bb1b?auto=format&fit=crop&q=80" class="rounded shadow-2xl parallax-img" alt="Gala">
+                </div>
+                <div class="md:w-1/2 md:pl-12 relative">
+                    <div class="absolute -left-2 md:-left-14 top-2 w-4 h-4 bg-[#D4AF37] rounded-full shadow-[0_0_10px_#D4AF37]"></div>
+                    <h3 class="gold-text text-2xl mb-2">Aug 14 - 15: The Welcome Party</h3>
+                    <p class="text-gray-400">Two nights of celebratory networking. Meet your fellow Queens in an atmosphere of luxury, live music, and royal hospitality.</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center mb-24 reveal-item">
+                <div class="md:w-1/2 md:pr-12 text-right relative">
+                    <h3 class="gold-text text-2xl mb-2">Aug 16: High Tea with the Mayor</h3>
+                    <p class="text-gray-400">Travel to the historic city of Oxford for an exclusive High Tea session with the Mayor. Discussion on community leadership and urban governance.</p>
+                    <div class="absolute -right-2 md:-right-14 top-2 w-4 h-4 bg-[#D4AF37] rounded-full"></div>
+                </div>
+                <div class="md:w-1/2 md:pl-12 hidden md:block">
+                    <img src="https://images.unsplash.com/photo-1558997519-83ec892344fd?auto=format&fit=crop&q=80" class="rounded shadow-2xl parallax-img" alt="Tea">
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row items-center mb-24 reveal-item">
+                <div class="md:w-1/2 md:pr-12 text-right hidden md:block">
+                    <img src="https://images.unsplash.com/photo-1529655683826-aba9b3e77383?auto=format&fit=crop&q=80" class="rounded shadow-2xl parallax-img" alt="Buckingham Palace">
+                </div>
+                <div class="md:w-1/2 md:pl-12 relative">
+                    <div class="absolute -left-2 md:-left-14 top-2 w-4 h-4 bg-[#D4AF37] rounded-full"></div>
+                    <h3 class="gold-text text-2xl mb-2">Aug 17: Buckingham & British Royalty</h3>
+                    <p class="text-gray-400">A curated visit to Buckingham Palace. Experience the height of British ceremonial power and meet with representatives of the royal household.</p>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="showcase" class="py-24 bg-white text-black">
+        <div class="max-w-7xl mx-auto px-8">
+            <h2 class="text-5xl mb-16 text-center">Cultural <span class="text-[#D4AF37]">Dominance</span></h2>
+            
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="space-y-8" id="showcase-text">
+                    <div class="itinerary-card p-8 border-black/10 text-black bg-gray-50">
+                        <h4 class="font-bold text-xl mb-2 uppercase tracking-tighter">Art & Fashion Expo</h4>
+                        <p>Showcasing the finest African canvases and textiles. From the galleries of Oxford to the runways of London, we exhibit our visual narrative.</p>
+                    </div>
+                    <div class="itinerary-card p-8 border-black/10 text-black bg-gray-50">
+                        <h4 class="font-bold text-xl mb-2 uppercase tracking-tighter">The Sound of the Continent</h4>
+                        <p>Evening musical content featuring fusion orchestras and traditional African percussion in world-class UK concert halls.</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4" id="showcase-gallery">
+                    <img src="https://images.unsplash.com/photo-1534346500593-3d027733f1b4?auto=format&fit=crop&q=80" class="h-64 w-full object-cover rounded shadow-lg" alt="Fashion">
+                    <img src="https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&q=80" class="h-64 w-full object-cover rounded shadow-lg mt-8" alt="Art">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-24 bg-black">
+        <div class="max-w-4xl mx-auto text-center px-4">
+            <h2 class="text-4xl mb-8 gold-text">Seminars & Sovereign Talks</h2>
+            <div class="grid gap-6">
+                <div class="p-6 border-l-4 border-[#D4AF37] bg-white/5 text-left italic">
+                    "The Architecture of Influence: How African Matriarchs Shape Global Policy."
+                </div>
+                <div class="p-6 border-l-4 border-[#D4AF37] bg-white/5 text-left italic">
+                    "Wealth Preservation: Moving from Riches to Generational Sovereignty."
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="p-12 text-center border-t border-white/10 opacity-60 text-sm tracking-[0.5em]">
+        AFRICAN QUEEN SUMMIT • LONDON • OXFORD • 2026
+    </footer>
+
+    <script>
+        // Initialize GSAP
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Hero Animation
+        gsap.from("#hero-text", {
+            duration: 1.5,
+            y: 100,
+            opacity: 0,
+            ease: "power4.out"
+        });
+
+        // Timeline Items Animation
+        const items = document.querySelectorAll('.reveal-item');
+        items.forEach((item, index) => {
+            gsap.from(item, {
+                scrollTrigger: {
+                    trigger: item,
+                    start: "top 85%",
+                },
+                x: index % 2 === 0 ? -50 : 50,
+                opacity: 0,
+                duration: 1,
+                ease: "power2.out"
+            });
+        });
+
+        // Showcase Animation
+        gsap.from("#showcase-text", {
+            scrollTrigger: {
+                trigger: "#showcase",
+                start: "top 70%",
+            },
+            x: -100,
+            opacity: 0,
+            duration: 1.2
+        });
+
+        gsap.from("#showcase-gallery img", {
+            scrollTrigger: {
+                trigger: "#showcase",
+                start: "top 70%",
+            },
+            scale: 0.8,
+            stagger: 0.3,
+            opacity: 0,
+            duration: 1.2
+        });
+    </script>
+</body>
+</html>
