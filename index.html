@@ -3,327 +3,377 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>African Queen Summit | UK 2026</title>
+    <title>African Queen Summit | The 2026 Decree</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
-    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@100;300;400;600;900&display=swap" rel="stylesheet">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
 
     <style>
-        :root { --gold: #D4AF37; --emerald: #043927; --black: #050505; --earth: #3B2A1A; }
-        body { background: var(--black); color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; scroll-behavior: smooth; }
-        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
-
-        /* The Custom 'Q' Styling */
-        .royal-q {
-            font-family: 'Playfair Display', serif;
-            color: var(--gold);
-            display: inline-block;
-            transform: scale(1.2) translateY(5px);
-            font-style: italic;
-            margin-right: -8px;
-            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.5));
+        :root { 
+            --gold: #D4AF37; 
+            --emerald: #043927; 
+            --black: #050505; 
+            --royal-gradient: linear-gradient(90deg, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
         }
 
-        .cic-tag {
-            border: 1px solid var(--gold);
-            padding: 4px 12px;
-            font-size: 11px;
-            letter-spacing: 2px;
-            color: var(--gold);
-            text-transform: uppercase;
-            background: rgba(212, 175, 55, 0.1);
-            backdrop-filter: blur(5px);
-            border-radius: 20px;
+        /* --- GLOBAL DYNAMICS --- */
+        body { 
+            background: var(--black); 
+            color: white; 
+            font-family: 'Inter', sans-serif; 
+            overflow-x: hidden; 
+            scroll-behavior: smooth;
         }
 
+        /* CSS TRICK: Animated Grain/Dust Overlay */
+        body::before {
+            content: "";
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.05; pointer-events: none; z-index: 50;
+        }
+
+        /* --- KEYFRAME ANIMATIONS --- */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(1.5deg); }
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.1); }
+            50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.3); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
+        }
+
+        .floating { animation: float 7s ease-in-out infinite; }
+        .floating-delayed { animation: float 9s ease-in-out infinite 2s; }
+
+        /* --- COMPONENT STYLES --- */
         .glass-panel {
-            background: rgba(255, 255, 255, 0.03);
-            border-left: 2px solid var(--gold);
-            backdrop-filter: blur(12px);
-            transition: all 0.5s ease;
-            position: relative;
-            overflow: hidden;
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            transition: all 0.7s cubic-bezier(0.19, 1, 0.22, 1);
         }
 
         .glass-panel:hover {
-            background: rgba(4, 57, 39, 0.4);
-            border-left-width: 6px;
+            border-color: var(--gold);
+            background: rgba(212, 175, 55, 0.04);
+            transform: scale(1.02);
+        }
+
+        .royal-q {
+            color: var(--gold);
+            font-style: italic;
+            display: inline-block;
+            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.4));
+        }
+
+        .text-gradient {
+            background: var(--royal-gradient);
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: shimmer 5s linear infinite;
         }
 
         .scroll-progress {
-            position: fixed; top: 0; left: 0; width: 0%; height: 4px;
-            background: linear-gradient(90deg, var(--emerald), var(--gold)); z-index: 200;
+            position: fixed; top: 0; left: 0; width: 0%; height: 5px;
+            background: var(--royal-gradient);
+            z-index: 1000;
         }
 
-        .location-tag { color: var(--gold); font-weight: 600; text-transform: uppercase; letter-spacing: 2px; font-size: 12px; }
-
-        /* Gradient Text */
-        .text-gradient {
-            background: linear-gradient(to right, #BF953F, #FCF6BA, #B38728, #FBF5B7, #AA771C);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+        /* Custom Cursor for Desktop */
+        #cursor-ball {
+            width: 30px; height: 30px; border: 1px solid var(--gold);
+            border-radius: 50%; position: fixed; pointer-events: none;
+            z-index: 9999; transition: transform 0.1s ease-out;
         }
-        
-        /* Logo styling for white theme integration */
-        .partner-logo { filter: brightness(0) invert(1) opacity(0.8); transition: opacity 0.3s ease; }
-        .partner-logo:hover { opacity: 1; }
+
+        /* Typography */
+        h1, h2, h3, h4 { font-family: 'Playfair Display', serif; }
+        .tracking-ultra { letter-spacing: 0.6em; }
+
+        /* Mobile Scale Resets */
+        @media (max-width: 768px) {
+            .mobile-title { font-size: 3.8rem !important; }
+            .mobile-sub { font-size: 1.2rem !important; letter-spacing: 0.3em !important; }
+            .container { padding-left: 1.5rem; padding-right: 1.5rem; }
+        }
     </style>
 </head>
 <body>
 
+    <div id="cursor-ball" class="hidden md:block"></div>
     <div class="scroll-progress"></div>
 
-    <nav class="fixed top-0 w-full z-[100] p-6 flex justify-between items-center bg-black/60 backdrop-blur-xl border-b border-white/5">
+    <nav class="fixed top-0 w-full z-[100] px-6 py-6 flex justify-between items-center bg-black/40 backdrop-blur-3xl border-b border-white/5">
         <div class="text-2xl font-black text-white tracking-widest">A<span class="royal-q">Q</span>S</div>
-        <div class="cic-tag hidden md:block">CIC • Reinvesting in Africa</div>
+        <div class="hidden lg:flex gap-14 text-[10px] uppercase tracking-ultra font-black text-gray-400">
+            <a href="#manifesto" class="hover:text-gold transition">The Decree</a>
+            <a href="#journey" class="hover:text-gold transition">The Path</a>
+            <a href="#contact" class="hover:text-gold transition">Apply</a>
+        </div>
+        <div class="flex items-center gap-4">
+            <div class="hidden md:block px-4 py-1.5 border border-gold/30 rounded-full text-[10px] text-gold uppercase font-bold tracking-widest">
+                CIC • Reinvesting 100%
+            </div>
+        </div>
     </nav>
 
-   <section class="h-screen flex flex-col items-center justify-center relative bg-[#043927] overflow-hidden">
-    <div class="absolute inset-0 z-0 scale-110" id="hero-img">
-        <div class="absolute inset-0 bg-gradient-to-b from-transparent via-emerald-950/20 to-black/80"></div>
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,_var(--gold)_0%,_transparent_70%)] opacity-20"></div>
-        
-        <img src="https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?auto=format&fit=crop&q=80" 
-             class="w-full h-full object-cover object-top brightness-125 contrast-110" 
-             alt="Radiant African Queen">
-    </div>
-    
-    <div class="relative z-10 text-center px-4 w-full" id="hero-content">
-        <div class="inline-block px-6 py-2 border border-[#D4AF37] bg-[#D4AF37]/10 backdrop-blur-md rounded-full mb-8">
-            <p class="uppercase tracking-[0.6em] text-[10px] md:text-xs text-white font-bold">London & Oxford • Aug 14-31, 2026</p>
+    <section class="relative h-screen flex flex-col items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0" id="hero-wrap">
+            <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black z-10"></div>
+            <img src="https://images.unsplash.com/photo-1618331812910-001dd3ac1e5c?auto=format&fit=crop&q=80" 
+                 class="w-full h-full object-cover brightness-110" alt="African Matriarch Gold">
         </div>
 
-        <h1 class="text-6xl md:text-[10rem] font-black leading-none mb-4 drop-shadow-2xl">
-            <span class="block text-white">AFRICAN</span>
-            <span class="royal-q">Q</span><span class="text-gradient italic">UEEN</span>
-            <span class="block text-3xl md:text-6xl tracking-[0.5em] font-light mt-4 text-white/90" style="font-family: 'Inter', sans-serif;">S U M M I T</span>
-        </h1>
-
-        <p class="text-xl md:text-3xl max-w-4xl mx-auto font-light tracking-wide text-white mt-12 drop-shadow-md">
-            Building physical and digital <span class="text-[#D4AF37] font-semibold italic">empires</span> in the heart of Africa.
-        </p>
-    </div>
-
-    <div class="absolute bottom-10 animate-bounce">
-        <div class="w-8 h-12 border-2 border-[#D4AF37] rounded-full flex justify-center p-2 shadow-[0_0_15px_rgba(212,175,55,0.5)]">
-            <div class="w-1 h-3 bg-[#D4AF37] rounded-full"></div>
-        </div>
-    </div>
-</section>
-
-<section id="manifesto" class="relative min-h-screen bg-[#050505] overflow-hidden py-32 border-y border-[#D4AF37]/30">
-    <div class="absolute inset-0 opacity-[0.02] pointer-events-none">
-        <h2 class="text-[20vw] font-black text-white absolute -left-20 top-0">Sovereign</h2>
-    </div>
-
-    <div class="container mx-auto px-6 md:px-12 relative z-10">
-        <div class="grid lg:grid-cols-2 gap-20 items-center">
-            
-            <div class="relative" id="manifesto-image">
-                <div class="absolute -inset-2 border border-[#D4AF37]/40 translate-x-4 translate-y-4"></div>
-                <div class="relative h-[800px] overflow-hidden shadow-2xl">
-                    <img src="https://images.unsplash.com/photo-1524234108056-1c1f48f64ab8?auto=format&fit=crop&q=80" 
-                         class="w-full h-full object-cover brightness-110" 
-                         alt="African Royalty">
-                </div>
+        <div class="relative z-20 text-center px-6" id="hero-ui">
+            <div class="floating inline-block px-8 py-2 border border-gold/50 bg-gold/10 backdrop-blur-xl rounded-full mb-12">
+                <p class="uppercase tracking-[0.6em] text-[10px] text-white font-black">August 14 — 31, 2026 • United Kingdom</p>
             </div>
 
-            <div class="space-y-10" id="manifesto-content">
-                <header>
-                    <span class="text-[#D4AF37] uppercase tracking-[0.4em] text-xs font-bold block mb-4">The Royal Mandate</span>
-                    <h2 class="text-5xl md:text-7xl font-black leading-tight text-white">
-                        Africa Arise: <br>
-                        <span class="text-gradient italic font-serif">The Queen’s Decree</span>
-                    </h2>
-                </header>
+            <h1 class="mobile-title text-7xl md:text-[11rem] font-black leading-none mb-6">
+                <span class="block text-white">AFRICAN</span>
+                <span class="royal-q">Q</span><span class="text-gradient italic">UEEN</span>
+                <span class="mobile-sub block text-2xl md:text-6xl tracking-ultra font-light mt-8 text-white/70" style="font-family: 'Inter', sans-serif;">S U M M I T</span>
+            </h1>
 
-                <div class="space-y-6 text-lg md:text-xl text-gray-300 font-light leading-relaxed">
-                    <p class="text-2xl font-serif text-[#D4AF37] italic border-l-4 border-[#D4AF37] pl-8 py-2">
-                        "The wealth of the land belongs to the Mothers of the land."
-                    </p>
+            <p class="text-lg md:text-3xl max-w-4xl mx-auto font-light tracking-wide text-white/90 mt-14 leading-relaxed">
+                Building physical and digital <span class="text-gold font-bold italic underline decoration-1 underline-offset-[12px]">empires</span> through the power of the Matriarch.
+            </p>
+        </div>
+
+        <div class="absolute bottom-16 left-1/2 -translate-x-1/2 text-center opacity-40">
+            <div class="w-[1px] h-20 bg-gradient-to-b from-gold to-transparent mx-auto mb-4"></div>
+            <p class="text-[9px] uppercase tracking-ultra">Enter the Domain</p>
+        </div>
+    </section>
+
+    <section id="manifesto" class="relative py-32 md:py-52 bg-[#050505] border-y border-gold/10">
+        <div class="container mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-24 items-center">
+                <div class="relative" id="manifesto-img">
+                    <div class="absolute -inset-6 border border-gold/10 translate-x-10 translate-y-10"></div>
+                    <div class="floating h-[500px] md:h-[850px] overflow-hidden relative shadow-[0_0_100px_rgba(0,0,0,1)]">
+                        <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?auto=format&fit=crop&q=80" 
+                             class="w-full h-full object-cover" alt="Sovereignty">
+                    </div>
+                    <div class="absolute bottom-10 -right-10 hidden md:block glass-panel p-8 max-w-xs">
+                        <p class="text-gold italic font-serif text-lg">"A Queen does not beg for her place; she asserts her sovereignty."</p>
+                    </div>
+                </div>
+
+                <div class="space-y-12" id="manifesto-content">
+                    <span class="text-gold uppercase tracking-[0.5em] text-xs font-black block">The Royal Mandate</span>
+                    <h2 class="text-6xl md:text-9xl font-black leading-tight">Africa Arise: <br><span class="text-gradient italic font-serif">The Decree</span></h2>
                     
-                    <p>
-                        While the West continues its scramble for our riches, drafting declarations in rooms we did not build, a new throne is being established. The question is no longer whether they will attempt to exploit our soil, but how the <span class="text-white font-bold">African Queen</span> will guard her inheritance.
-                    </p>
-
-                    <p>
-                        The time has come for the Matriarchs to rise—fully aware, fully awake, and ready to shield the future of our children. A Queen does not beg for her place; she asserts her sovereignty, secures her treasury, and protects her lineage.
-                    </p>
-
-                    <div class="pt-8 grid grid-cols-2 gap-4">
-                        <div class="p-6 bg-[#D4AF37]/10 border border-[#D4AF37]/20 rounded-xl">
-                            <h4 class="text-white font-bold mb-2">Build Empire</h4>
-                            <p class="text-sm text-gray-400">Transforming resources into digital and physical dominance.</p>
-                        </div>
-                        <div class="p-6 bg-emerald-900/10 border border-emerald-500/20 rounded-xl">
-                            <h4 class="text-white font-bold mb-2">Rule Unity</h4>
-                            <p class="text-sm text-gray-400">Rejecting dependency; standing under the banner of progress.</p>
+                    <div class="space-y-10 text-xl text-gray-400 font-light leading-relaxed">
+                        <p class="text-3xl md:text-4xl font-serif text-white italic border-l-4 border-gold pl-10 py-4">
+                            "The wealth of the land belongs to the Mothers of the land."
+                        </p>
+                        <p>
+                            For too long, the narrative of our soil has been written by those who do not bleed for it. The scramble for Africa continues in the boardrooms and digital clouds of the West. No more.
+                        </p>
+                        <p>
+                            The <span class="text-white font-black">African Queen Summit</span> is the summoning of the Matriarchs. We are here to reclaim the inheritance of our children, to build treasury, and to ensure that the progress of our 55 nations is shielded by our own hands.
+                        </p>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-12">
+                            <div class="glass-panel p-10 rounded-3xl">
+                                <h4 class="text-gold font-black mb-4 uppercase tracking-widest text-sm">Economic Shield</h4>
+                                <p class="text-xs leading-loose text-gray-500">Securing physical resources and digital land rights through unified matriarchal governance.</p>
+                            </div>
+                            <div class="glass-panel p-10 rounded-3xl">
+                                <h4 class="text-gold font-black mb-4 uppercase tracking-widest text-sm">Sovereign Legacy</h4>
+                                <p class="text-xs leading-loose text-gray-500">Creating educational and financial systems that reject dependency and embrace autonomy.</p>
+                            </div>
                         </div>
                     </div>
-
-                    <p class="text-xl font-bold text-white pt-6">
-                        Africa, the time is now. Arise and be ready.
-                    </p>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-    <section class="py-24 bg-[#010a06] text-white border-y border-white/5 relative z-20">
-        <div class="container mx-auto px-6 md:px-12 text-center timeline-item">
-            <span class="location-tag text-emerald-200">The Groundwork</span>
-            <h2 class="text-4xl md:text-5xl font-black mt-4 mb-6">The Physical Space</h2>
-            <p class="text-lg max-w-4xl mx-auto text-gray-400 mb-16 italic">
-                A dedicated, physical empire curated in exclusive collaboration with the continent's most powerful heritage and travel initiatives. This is the bedrock of our structural dominance.
-            </p>
-            
-            <div class="flex flex-wrap justify-center items-center gap-12 md:gap-20" id="partner-logos">
-                <div class="font-serif text-2xl font-bold tracking-widest text-white/80 hover:text-[#D4AF37] transition duration-300">MOTHERLAND<br><span class="text-sm">BECKONS</span></div>
-                <div class="font-serif text-4xl font-black tracking-widest text-white/80 hover:text-white transition duration-300">IPADA</div>
-                <img src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Ethiopian_Airlines_Logo.svg" alt="Ethiopian Airlines" class="h-10 partner-logo">
-                <div class="font-serif text-3xl font-bold tracking-widest text-[#D4AF37]/80 hover:text-[#D4AF37] transition duration-300">FATA</div>
-                <div class="font-serif text-3xl font-light tracking-widest text-white/80 border-b border-[#D4AF37] hover:text-white transition duration-300">MASAI</div>
-            </div>
-        </div>
-    </section>
-
-    <section class="py-32 px-6 md:px-12 container mx-auto relative">
-        <div class="absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#D4AF37] via-[#043927] to-transparent opacity-20 hidden md:block -z-10"></div>
-
-        <div class="grid md:grid-cols-2 gap-16 items-center mb-40 timeline-item">
-            <div class="glass-panel p-10 lg:p-14 rounded-r-2xl shadow-2xl">
-                <span class="location-tag">London</span>
-                <h2 class="text-5xl mt-4 mb-6">Aug 14 — 15: <br><span class="text-gradient">The Welcome</span></h2>
-                <p class="text-gray-300 text-lg leading-relaxed">Welcome cocktails upon arrival. The summit breathes to life with two opening days of high-frequency networking, setting the standard for the sovereign journey ahead.</p>
-            </div>
-            <div class="relative h-[500px] rounded-lg overflow-hidden shadow-[0_20px_50px_rgba(4,57,39,0.5)] image-wrapper">
-                <img src="https://images.unsplash.com/photo-1544365558-35aa4afcf11f?auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Elegant African Women">
-            </div>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-16 items-center mb-40 timeline-item">
-            <div class="relative h-[500px] rounded-lg overflow-hidden shadow-[0_20px_50px_rgba(212,175,55,0.2)] image-wrapper order-2 md:order-1">
-                <img src="https://images.unsplash.com/photo-1531384441138-2736e62e0919?auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="African Women Studying/Leading">
-            </div>
-            <div class="glass-panel p-10 lg:p-14 rounded-l-2xl shadow-2xl order-1 md:order-2">
-                <span class="location-tag">Oxford University & City Hall</span>
-                <h2 class="text-5xl mt-4 mb-6">Aug 16 — 21: <br><span class="text-gradient">The Scholars</span></h2>
-                <ul class="space-y-6 text-gray-300 text-lg">
-                    <li class="flex items-start gap-3"><span class="text-[#D4AF37] text-2xl">✦</span> <div><strong>Mayor's High Tea:</strong> An exclusive first-week invitation for drinks and high tea with the Mayor of Oxford.</div></li>
-                    <li class="flex items-start gap-3"><span class="text-[#D4AF37] text-2xl">✦</span> <div><strong>University Course:</strong> Intensive modules on legacy, economics, and leadership.</div></li>
-                    <li class="flex items-start gap-3"><span class="text-[#D4AF37] text-2xl">✦</span> <div><strong>Oxford Art Showcase (16th-18th):</strong> Exclusively African art displayed in the historic city.</div></li>
-                </ul>
-            </div>
-        </div>
-
-        <div class="grid md:grid-cols-2 gap-16 items-center mb-40 timeline-item">
-            <div class="glass-panel p-10 lg:p-14 rounded-r-2xl shadow-2xl">
-                <span class="location-tag">Paddington Art Gallery, London</span>
-                <h2 class="text-5xl mt-4 mb-6">Aug 19 — 21: <br><span class="text-gradient">Canvas of Empire</span></h2>
-                <p class="text-gray-300 text-lg leading-relaxed">A breathtaking exhibition of African artistry. Works will be exclusively <strong>sold—not auctioned</strong>—ensuring the direct financial empowerment of the artists and fueling our CIC mission.</p>
-            </div>
-            <div class="relative h-[500px] rounded-lg overflow-hidden shadow-[0_20px_50px_rgba(4,57,39,0.5)] image-wrapper">
-                <img src="https://images.unsplash.com/photo-1534346500593-3d027733f1b4?auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="African Art and Beauty">
-            </div>
-        </div>
-
-    </section>
-
-    <section class="py-32 bg-[#043927] text-white relative overflow-hidden">
-        <div class="container mx-auto px-6 md:px-12">
-            <div class="text-center mb-20 timeline-item">
-                <span class="location-tag text-emerald-200">The London Phase</span>
-                <h2 class="text-6xl md:text-8xl font-black mt-4 mb-6 tracking-tighter">Aug 22 — 31</h2>
-                <p class="text-xl max-w-2xl mx-auto text-emerald-100 italic">Ten days of unbridled cultural dominance in the heart of the capital.</p>
-            </div>
-
-            <div class="bg-black/60 p-10 md:p-16 rounded-2xl border-2 border-[#D4AF37] text-center mb-16 shadow-[0_0_40px_rgba(212,175,55,0.2)] timeline-item">
-                <h3 class="text-4xl md:text-5xl font-serif mb-4 text-[#D4AF37]">The Buckingham Palace Invitation</h3>
-                <p class="text-gray-300 text-lg max-w-3xl mx-auto">A supremely exclusive, private invitation to step <strong>inside</strong> the historic halls of Buckingham Palace in London. A true meeting of royalty.</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-12">
-                <div class="bg-black/40 p-10 rounded-2xl border border-[#D4AF37]/30 hover:border-[#D4AF37] transition duration-500 timeline-item">
-                    <img src="https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?auto=format&fit=crop&q=80" class="w-full h-64 object-cover rounded-xl mb-8" alt="African Fashion">
-                    <h3 class="text-3xl font-serif mb-4 text-[#D4AF37]">The Continental Fashion Show</h3>
-                    <p class="text-gray-300">A panoramic display of garments from <strong>all 55 African countries</strong>. Showcasing both royal attire and modern daily wear, with exclusive options to purchase directly from the designers.</p>
-                </div>
-                
-                <div class="bg-black/40 p-10 rounded-2xl border border-[#D4AF37]/30 hover:border-[#D4AF37] transition duration-500 timeline-item">
-                    <img src="https://images.unsplash.com/photo-1531123414780-f74242c2b052?auto=format&fit=crop&q=80" class="w-full h-64 object-cover rounded-xl mb-8" alt="African Cuisine and Matriarchs">
-                    <h3 class="text-3xl font-serif mb-4 text-[#D4AF37]">The Gastronomy Congregation</h3>
-                    <p class="text-gray-300">A monumental food tasting experience. Master chefs and matriarchs congregate to present the authentic, ancestral dishes of 55 distinct African nations.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-32 container mx-auto px-6 md:px-12">
-        <div class="grid md:grid-cols-2 gap-16 items-center mb-40 timeline-item">
-            <div class="relative h-[600px] rounded-lg overflow-hidden shadow-2xl image-wrapper">
-                <img src="https://images.unsplash.com/photo-1515438778563-71c142c6762c?auto=format&fit=crop&q=80" class="w-full h-full object-cover object-top" alt="Gala Night">
+    <section id="journey" class="py-32 bg-black px-6">
+        <div class="container mx-auto">
+            <div class="text-center mb-40 reveal">
+                <span class="text-gold text-xs uppercase tracking-ultra font-black">Timeline 2026</span>
+                <h2 class="text-6xl md:text-9xl font-black mt-6 mb-8">The Journey</h2>
+                <div class="w-48 h-1 bg-gold mx-auto"></div>
             </div>
-            <div class="glass-panel p-10 lg:p-14 rounded-2xl">
-                <span class="location-tag">London • Aug 27</span>
-                <h2 class="text-5xl md:text-6xl mt-4 mb-6 text-gradient">The Cultural Gala Night</h2>
-                <p class="text-gray-300 text-lg mb-6">An immersive evening celebrating the sights and sounds of the continent. Featuring:</p>
-                <ul class="space-y-4 text-gray-300 text-lg">
-                    <li class="flex items-center gap-3"><span class="text-[#D4AF37]">✦</span> High-End Musical Performances</li>
-                    <li class="flex items-center gap-3"><span class="text-[#D4AF37]">✦</span> Curated Sightseeing Experiences</li>
-                    <li class="flex items-center gap-3"><span class="text-[#D4AF37]">✦</span> Immersive Art Displays</li>
-                </ul>
-            </div>
-        </div>
 
-        <div class="relative rounded-3xl overflow-hidden shadow-[0_0_50px_rgba(212,175,55,0.3)] timeline-item">
-            <div class="absolute inset-0">
-                <img src="https://images.unsplash.com/photo-1566737236500-c8ac43014a67?auto=format&fit=crop&q=80" class="w-full h-full object-cover opacity-40" alt="Porchester Hall Gala">
-                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
+            <div class="grid md:grid-cols-2 gap-20 items-center mb-40 reveal">
+                <div class="floating h-[400px] md:h-[600px] overflow-hidden rounded-[40px]">
+                    <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Welcome">
+                </div>
+                <div class="space-y-8">
+                    <h3 class="text-4xl md:text-7xl font-serif">Aug 14 — 15 <br><span class="text-gradient">The Welcome</span></h3>
+                    <p class="text-gray-400 text-xl font-light">The journey begins in the heart of London. Welcome cocktails and high-frequency networking for the first 200 global delegates.</p>
+                    <div class="h-px w-full bg-gold/20"></div>
+                </div>
             </div>
-            <div class="relative z-10 p-12 md:p-24 text-center">
-                <span class="location-tag text-2xl tracking-[0.4em]">Porchester Hall • Aug 31</span>
-                <h2 class="text-6xl md:text-9xl font-black mt-6 mb-8">THE GRAND <br><span class="text-gradient">FINALE</span></h2>
-                <p class="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto italic mb-12">
-                    The ultimate closing gala. A night of supreme elegance, sealing our empires, celebrating our royalty, and finalizing the legacy of the 2026 Summit.
+
+            <div class="grid md:grid-cols-2 gap-20 items-center mb-40 reveal">
+                <div class="order-2 md:order-1 space-y-8">
+                    <h3 class="text-4xl md:text-7xl font-serif">Aug 16 — 21 <br><span class="text-gradient">The Scholars</span></h3>
+                    <p class="text-gray-400 text-xl font-light">An intensive academic residence at **Oxford University**. Modules focused on global leadership, wealth preservation, and ancestral economics.</p>
+                    <ul class="space-y-4 text-sm text-gold tracking-widest uppercase font-bold">
+                        <li>✦ High Tea with the Mayor of Oxford</li>
+                        <li>✦ Private University Archives Access</li>
+                        <li>✦ Certification of Global Leadership</li>
+                    </ul>
+                </div>
+                <div class="order-1 md:order-2 floating-delayed h-[400px] md:h-[600px] overflow-hidden rounded-[40px]">
+                    <img src="https://images.unsplash.com/photo-1589156229687-496a31ad1d1f?auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Oxford Phase">
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-20 items-center mb-40 reveal">
+                <div class="floating h-[400px] md:h-[600px] overflow-hidden rounded-[40px]">
+                    <img src="https://images.unsplash.com/photo-1523821741446-edb2b68bb7a0?auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="Art Gallery">
+                </div>
+                <div class="space-y-8">
+                    <h3 class="text-4xl md:text-7xl font-serif">Aug 19 — 21 <br><span class="text-gradient">The Canvas</span></h3>
+                    <p class="text-gray-400 text-xl font-light">**Paddington Art Gallery**. A curated exhibition of the continent’s most visionary women artists. Every piece is **sold—not auctioned**—with proceeds going directly to the artists.</p>
+                    <div class="glass-panel p-6 border-l-4 border-gold">
+                        <p class="text-xs uppercase tracking-widest text-white font-black">Direct Empowerment Model</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gold/5 border border-gold/20 p-10 md:p-32 rounded-[60px] text-center reveal">
+                <span class="text-gold text-xs uppercase tracking-ultra mb-6 block">Exclusive Invitation</span>
+                <h3 class="text-5xl md:text-8xl font-black mb-10">Buckingham <br><span class="text-gradient italic">Palace</span></h3>
+                <p class="text-gray-300 text-xl max-w-3xl mx-auto font-light leading-loose">
+                    A private, high-security congregation within the halls of the British Monarchy. A moment of diplomacy, history, and the assertion of African Matriarchal presence on the world stage.
                 </p>
-                <button class="bg-[#D4AF37] text-black font-bold uppercase tracking-widest py-5 px-12 rounded hover:bg-white transition duration-300">Request Sovereign Invitation</button>
             </div>
         </div>
     </section>
 
-    <footer class="py-16 bg-[#020a07] text-center border-t border-white/5">
-        <h2 class="text-4xl font-black mb-4">A<span class="royal-q">Q</span>S</h2>
-        <p class="text-xs text-[#D4AF37] tracking-[0.5em] mb-4">COMMUNITY INTEREST COMPANY</p>
-        <p class="text-gray-600 text-sm italic max-w-md mx-auto">All profits are reinvested into running initiatives for the empowerment of African women globally.</p>
-        <p class="text-xs text-gray-700 tracking-[0.2em] mt-12">© 2026 AFRICAN QUEEN SUMMIT</p>
+    <section class="py-32 bg-[#043927] relative overflow-hidden">
+        <div class="container mx-auto px-6">
+            <div class="grid md:grid-cols-2 gap-12">
+                <div class="glass-panel p-12 rounded-[40px] floating reveal">
+                    <img src="https://images.unsplash.com/photo-1560529870-1efc5a43990f?auto=format&fit=crop&q=80" class="w-full h-80 object-cover rounded-3xl mb-10" alt="Fashion">
+                    <h4 class="text-3xl font-serif mb-6">The Fashion Panoramic</h4>
+                    <p class="text-emerald-100/70 font-light">Showcasing the royal garments of **55 nations**. A runway of heritage that transitions from the ancient thrones to modern digital couture.</p>
+                </div>
+                <div class="glass-panel p-12 rounded-[40px] floating-delayed reveal mt-12 md:mt-0">
+                    <img src="https://images.unsplash.com/photo-1531123414780-f74242c2b052?auto=format&fit=crop&q=80" class="w-full h-80 object-cover rounded-3xl mb-10" alt="Food">
+                    <h4 class="text-3xl font-serif mb-6">Gastronomy Congregation</h4>
+                    <p class="text-emerald-100/70 font-light">**55 Master Chefs.** A culinary journey through the flavors of the continent, prepared by the hands that have fed empires for generations.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-32 bg-black text-center reveal">
+        <div class="container mx-auto px-6">
+            <span class="text-gold text-xs uppercase tracking-ultra">The Grand Finale • Aug 31</span>
+            <h2 class="text-6xl md:text-[10rem] font-black mt-10 mb-12 uppercase">Porchester <br><span class="text-gradient">Hall</span></h2>
+            <div class="relative max-w-6xl mx-auto rounded-[60px] overflow-hidden h-[600px] mb-20 group">
+                <img src="https://images.unsplash.com/photo-1566737236500-c8ac43014a67?auto=format&fit=crop&q=80" 
+                     class="w-full h-full object-cover opacity-60 transition-transform duration-1000 group-hover:scale-110" alt="Gala">
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="glass-panel p-10 md:p-20 rounded-full border-gold">
+                        <p class="text-white text-xl md:text-3xl font-serif italic">Musical Performances & Royal Displays</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-32 bg-black px-6 relative">
+        <div class="container mx-auto max-w-6xl">
+            <div class="glass-panel p-10 md:p-32 rounded-[60px] relative overflow-hidden">
+                <div class="text-center mb-20">
+                    <h2 class="text-5xl md:text-9xl font-black mb-10">Apply for <br><span class="text-gradient italic">Invitation</span></h2>
+                    
+                    <div class="flex flex-wrap justify-center gap-12 mt-16">
+                        <a href="tel:+2349076602222" class="group">
+                            <p class="text-gold text-[10px] uppercase tracking-ultra mb-2">Nigeria Line</p>
+                            <p class="text-2xl font-black group-hover:text-gold transition">+234 907 660 2222</p>
+                        </a>
+                        <a href="tel:+447932506556" class="group">
+                            <p class="text-gold text-[10px] uppercase tracking-ultra mb-2">UK Line</p>
+                            <p class="text-2xl font-black group-hover:text-gold transition">+44 7932 506556</p>
+                        </a>
+                    </div>
+                </div>
+
+                <form action="https://formspree.io/f/obonganwan.aruk@yahoo.com" method="POST" class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                    <div class="space-y-10">
+                        <input type="text" name="name" placeholder="Full Name" required class="w-full bg-transparent border-b-2 border-white/10 p-6 focus:border-gold outline-none transition text-2xl font-light">
+                        <input type="email" name="email" placeholder="Email" required class="w-full bg-transparent border-b-2 border-white/10 p-6 focus:border-gold outline-none transition text-2xl font-light">
+                    </div>
+                    <div class="space-y-10">
+                        <select name="nation" class="w-full bg-transparent border-b-2 border-white/10 p-6 focus:border-gold outline-none transition text-xl font-light text-gray-500">
+                            <option>Primary Heritage (55 Nations)</option>
+                            <option>West Africa</option>
+                            <option>East Africa</option>
+                            <option>North Africa</option>
+                            <option>South Africa</option>
+                            <option>Central Africa</option>
+                        </select>
+                        <textarea name="vision" placeholder="Your Vision for the Matriarchy..." class="w-full bg-transparent border-b-2 border-white/10 p-6 focus:border-gold outline-none transition text-xl font-light"></textarea>
+                    </div>
+                    <button type="submit" class="md:col-span-2 w-full bg-gold py-10 rounded-full text-black font-black uppercase tracking-ultra text-sm hover:bg-white hover:scale-[1.05] transition-all duration-700 shadow-2xl">
+                        Submit Sovereign Application
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-32 bg-black border-t border-white/5 text-center px-6">
+        <div class="text-5xl font-black mb-6 tracking-ultra">A<span class="royal-q">Q</span>S</div>
+        <p class="text-gold text-xs uppercase tracking-ultra mb-12">Community Interest Company</p>
+        
+        <div class="mb-20">
+            <a href="mailto:obonganwan.aruk@yahoo.com" class="text-gray-400 hover:text-gold transition italic font-serif text-xl underline underline-offset-8">obonganwan.aruk@yahoo.com</a>
+        </div>
+
+        <div class="pt-20 border-t border-white/5 space-y-4">
+            <p class="text-[11px] text-gray-500 tracking-ultra uppercase">
+                Website built with <span class="text-red-700 animate-pulse">♥</span> by 
+                <a href="mailto:edozie@yureka.media" class="text-gold font-black hover:text-white">Edozie Izegbu</a>
+            </p>
+            <p class="text-[9px] text-gray-800 tracking-ultra">© 2026 AFRICAN QUEEN SUMMIT UK CIC • REINVESTING IN AFRICA</p>
+        </div>
     </footer>
 
     <script>
         gsap.registerPlugin(ScrollTrigger);
 
-        gsap.to(".scroll-progress", { width: "100%", ease: "none", scrollTrigger: { scrub: 0 }});
-
-        const heroTl = gsap.timeline({ scrollTrigger: { trigger: "#hero-content", start: "top center", end: "bottom top", scrub: true }});
-        heroTl.to("#hero-content", { y: -150, opacity: 0, duration: 1 }).to("#hero-img", { scale: 1.2, filter: "brightness(0.3)", duration: 1 }, "<");
-
-        const items = document.querySelectorAll('.timeline-item');
-        items.forEach((item) => {
-            gsap.from(item, { scrollTrigger: { trigger: item, start: "top 85%" }, y: 80, opacity: 0, duration: 1.2, ease: "power3.out" });
+        // Custom Cursor
+        const cursor = document.getElementById('cursor-ball');
+        document.addEventListener('mousemove', (e) => {
+            gsap.to(cursor, { x: e.clientX - 15, y: e.clientY - 15, duration: 0.2 });
         });
 
-        const images = document.querySelectorAll('.image-wrapper img');
-        images.forEach(img => {
-            gsap.fromTo(img, { scale: 1.2 }, { scale: 1, ease: "none", scrollTrigger: { trigger: img.parentElement, start: "top bottom", end: "bottom top", scrub: true }});
+        // Scroll Progress
+        gsap.to(".scroll-progress", { width: "100%", ease: "none", scrollTrigger: { scrub: 0.3 }});
+
+        // Hero Parallax Depth
+        gsap.to("#hero-wrap", { scale: 1.4, filter: "brightness(0.3)", scrollTrigger: { trigger: "#hero-wrap", start: "top top", end: "bottom top", scrub: true }});
+        gsap.to("#hero-ui", { y: -150, opacity: 0, scrollTrigger: { trigger: "#hero-ui", start: "top 20%", end: "bottom top", scrub: true }});
+
+        // Universal Reveal
+        const reveals = document.querySelectorAll('.reveal');
+        reveals.forEach((el) => {
+            gsap.from(el, { scrollTrigger: { trigger: el, start: "top 85%" }, y: 80, opacity: 0, duration: 1.5, ease: "expo.out" });
         });
-        
-        gsap.from("#partner-logos > div, #partner-logos > img", {
-            scrollTrigger: { trigger: "#partner-logos", start: "top 90%" },
-            y: 30, opacity: 0, stagger: 0.15, duration: 1, ease: "power2.out"
-        });
+
+        // Text Content Reveal
+        gsap.from("#manifesto-content > *", { scrollTrigger: { trigger: "#manifesto", start: "top 60%" }, x: 50, opacity: 0, duration: 1.2, stagger: 0.2, ease: "power4.out" });
     </script>
 </body>
 </html>
