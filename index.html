@@ -3,223 +3,229 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>The Royal Itinerary | African Queen Summit 2026</title>
+    <title>African Queen Summit | The Imperial Experience</title>
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
 
     <style>
-        :root {
-            --gold: #D4AF37;
-            --emerald: #043927;
-            --black: #0A0A0A;
-        }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--black);
-            color: #fff;
-            overflow-x: hidden;
-        }
+        :root { --gold: #D4AF37; --emerald: #043927; --black: #050505; }
+        body { background: var(--black); color: white; font-family: 'Inter', sans-serif; overflow-x: hidden; }
         h1, h2, h3 { font-family: 'Playfair Display', serif; }
 
-        .gold-text { color: var(--gold); }
-        .bg-emerald { background-color: var(--emerald); }
+        /* Animation Layers */
+        .reveal-text { clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%); }
         
-        .timeline-line {
-            width: 2px;
-            background: linear-gradient(to bottom, var(--gold), transparent);
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            height: 100%;
-            z-index: 0;
+        .royal-line {
+            position: absolute; left: 50%; width: 2px;
+            background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+            height: 100%; transform: translateX(-50%);
+            z-index: 0; opacity: 0.3;
         }
 
-        .itinerary-card {
+        .glass-card {
             background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(212, 175, 55, 0.2);
-            backdrop-filter: blur(10px);
-            transition: all 0.5s ease;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.1);
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        .glass-card:hover { transform: scale(1.02); border-color: var(--gold); }
 
-        .itinerary-card:hover {
-            border-color: var(--gold);
-            background: rgba(212, 175, 55, 0.05);
-        }
+        /* Custom Horizontal Scroller */
+        .horizontal-container { display: flex; width: 400%; height: 100vh; }
+        .panel { width: 100vw; height: 100vh; display: flex; justify-content: center; align-items: center; }
 
-        .parallax-img {
-            filter: grayscale(30%) brightness(80%);
-            transition: filter 0.5s ease;
-        }
-
-        .parallax-img:hover {
-            filter: grayscale(0%) brightness(100%);
-        }
+        .image-reveal-wrapper { position: relative; overflow: hidden; }
+        .image-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--emerald); z-index: 2; }
     </style>
 </head>
 <body>
 
-    <nav class="fixed w-full z-50 p-6 flex justify-between items-center bg-black/80 backdrop-blur-md border-b border-white/10">
-        <div class="text-xl font-bold tracking-[0.3em] gold-text">AQS • 2026</div>
-        <div class="space-x-6 text-xs uppercase tracking-widest">
-            <a href="#welcome" class="hover:text-[#D4AF37]">Arrival</a>
-            <a href="#itinerary" class="hover:text-[#D4AF37]">Timeline</a>
-            <a href="#showcase" class="hover:text-[#D4AF37]">Culture</a>
-        </div>
-    </nav>
+    <div id="luxy">
 
-    <section class="h-[80vh] flex flex-col justify-center items-center text-center px-4 relative overflow-hidden">
-        <div class="absolute inset-0 opacity-40">
-            <img src="https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80" class="w-full h-full object-cover" alt="London Skyline">
-        </div>
-        <div class="relative z-10" id="hero-text">
-            <h1 class="text-5xl md:text-8xl mb-4">The Royal <span class="gold-text">Itinerary</span></h1>
-            <p class="text-xl tracking-widest font-light">Oxford & London | August 14 — 25, 2026</p>
-        </div>
-    </section>
+        <nav class="fixed top-0 w-full z-[100] p-8 flex justify-between items-center mix-blend-difference">
+            <div class="text-2xl font-black tracking-tighter gold-text uppercase" id="logo">AQS 2026</div>
+            <div class="flex gap-8 text-[10px] uppercase tracking-[0.3em]">
+                <a href="#itinerary" class="nav-link">Itinerary</a>
+                <a href="#gala" class="nav-link">The Gala</a>
+                <a href="#food" class="nav-link">The 54 Feast</a>
+            </div>
+        </nav>
 
-    <section id="welcome" class="py-20 px-8 bg-emerald relative">
-        <div class="max-w-4xl mx-auto text-center" id="welcome-content">
-            <h2 class="text-4xl mb-6">The Grand Arrival</h2>
-            <p class="text-lg text-gray-200 leading-relaxed">
-                Your journey begins on <strong>August 14th</strong>. As you touch down in the UK, the "Welcome to the Throne" gala kicks off a 48-hour celebration across London and Oxford, setting the stage for a week of dominance and enlightenment.
-            </p>
-        </div>
-    </section>
+        <section class="h-screen flex items-center justify-center relative bg-[#021810]">
+            <div class="absolute inset-0 z-0 overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?auto=format&fit=crop&q=80" 
+                     class="w-full h-full object-cover opacity-20 scale-125" id="hero-bg">
+            </div>
+            <div class="relative z-10 text-center">
+                <h1 class="text-7xl md:text-[10rem] font-black leading-none reveal-text" id="hero-title">
+                    <span class="block">AFRICAN</span>
+                    <span class="block text-[#D4AF37] italic">QUEEN</span>
+                </h1>
+                <p class="mt-8 text-lg uppercase tracking-[1em] opacity-0" id="hero-sub">Oxford & London • Aug 14-25</p>
+            </div>
+        </section>
 
-    <section id="itinerary" class="py-24 relative px-4">
-        <div class="timeline-line"></div>
-        
-        <div class="max-w-5xl mx-auto">
+        <section id="itinerary" class="py-32 relative">
+            <div class="royal-line" id="scroll-line"></div>
             
-            <div class="flex flex-col md:flex-row items-center mb-24 reveal-item">
-                <div class="md:w-1/2 md:pr-12 text-right hidden md:block">
-                    <img src="https://images.unsplash.com/photo-1531050171651-a3a7a7a9bb1b?auto=format&fit=crop&q=80" class="rounded shadow-2xl parallax-img" alt="Gala">
-                </div>
-                <div class="md:w-1/2 md:pl-12 relative">
-                    <div class="absolute -left-2 md:-left-14 top-2 w-4 h-4 bg-[#D4AF37] rounded-full shadow-[0_0_10px_#D4AF37]"></div>
-                    <h3 class="gold-text text-2xl mb-2">Aug 14 - 15: The Welcome Party</h3>
-                    <p class="text-gray-400">Two nights of celebratory networking. Meet your fellow Queens in an atmosphere of luxury, live music, and royal hospitality.</p>
-                </div>
-            </div>
-
-            <div class="flex flex-col md:flex-row items-center mb-24 reveal-item">
-                <div class="md:w-1/2 md:pr-12 text-right relative">
-                    <h3 class="gold-text text-2xl mb-2">Aug 16: High Tea with the Mayor</h3>
-                    <p class="text-gray-400">Travel to the historic city of Oxford for an exclusive High Tea session with the Mayor. Discussion on community leadership and urban governance.</p>
-                    <div class="absolute -right-2 md:-right-14 top-2 w-4 h-4 bg-[#D4AF37] rounded-full"></div>
-                </div>
-                <div class="md:w-1/2 md:pl-12 hidden md:block">
-                    <img src="https://images.unsplash.com/photo-1558997519-83ec892344fd?auto=format&fit=crop&q=80" class="rounded shadow-2xl parallax-img" alt="Tea">
-                </div>
-            </div>
-
-            <div class="flex flex-col md:flex-row items-center mb-24 reveal-item">
-                <div class="md:w-1/2 md:pr-12 text-right hidden md:block">
-                    <img src="https://images.unsplash.com/photo-1529655683826-aba9b3e77383?auto=format&fit=crop&q=80" class="rounded shadow-2xl parallax-img" alt="Buckingham Palace">
-                </div>
-                <div class="md:w-1/2 md:pl-12 relative">
-                    <div class="absolute -left-2 md:-left-14 top-2 w-4 h-4 bg-[#D4AF37] rounded-full"></div>
-                    <h3 class="gold-text text-2xl mb-2">Aug 17: Buckingham & British Royalty</h3>
-                    <p class="text-gray-400">A curated visit to Buckingham Palace. Experience the height of British ceremonial power and meet with representatives of the royal household.</p>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <section id="showcase" class="py-24 bg-white text-black">
-        <div class="max-w-7xl mx-auto px-8">
-            <h2 class="text-5xl mb-16 text-center">Cultural <span class="text-[#D4AF37]">Dominance</span></h2>
-            
-            <div class="grid md:grid-cols-2 gap-12">
-                <div class="space-y-8" id="showcase-text">
-                    <div class="itinerary-card p-8 border-black/10 text-black bg-gray-50">
-                        <h4 class="font-bold text-xl mb-2 uppercase tracking-tighter">Art & Fashion Expo</h4>
-                        <p>Showcasing the finest African canvases and textiles. From the galleries of Oxford to the runways of London, we exhibit our visual narrative.</p>
+            <div class="container mx-auto px-8 mb-40 relative z-10">
+                <div class="grid md:grid-cols-2 gap-20 items-center reveal-box">
+                    <div class="image-reveal-wrapper">
+                        <div class="image-overlay"></div>
+                        <img src="https://images.unsplash.com/photo-1520962880247-cfaf541c8724?auto=format&fit=crop&q=80" class="rounded-lg shadow-2xl">
                     </div>
-                    <div class="itinerary-card p-8 border-black/10 text-black bg-gray-50">
-                        <h4 class="font-bold text-xl mb-2 uppercase tracking-tighter">The Sound of the Continent</h4>
-                        <p>Evening musical content featuring fusion orchestras and traditional African percussion in world-class UK concert halls.</p>
+                    <div>
+                        <h2 class="text-5xl mb-6">Aug 14-15: <br><span class="text-[#D4AF37]">The Arrival</span></h2>
+                        <p class="text-gray-400 text-lg leading-relaxed">The summit breathes to life with a 48-hour welcome party. As you land in the UK, the transition into your sovereign state begins. Music, connection, and preparation.</p>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-4" id="showcase-gallery">
-                    <img src="https://images.unsplash.com/photo-1534346500593-3d027733f1b4?auto=format&fit=crop&q=80" class="h-64 w-full object-cover rounded shadow-lg" alt="Fashion">
-                    <img src="https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&q=80" class="h-64 w-full object-cover rounded shadow-lg mt-8" alt="Art">
+            </div>
+
+            <div class="container mx-auto px-8 mb-40 relative z-10">
+                <div class="grid md:grid-cols-2 gap-20 items-center reveal-box">
+                    <div class="order-2 md:order-1">
+                        <h2 class="text-5xl mb-6 text-right">High Tea <br><span class="text-[#D4AF37]">With The Mayor</span></h2>
+                        <p class="text-gray-400 text-lg leading-relaxed text-right">Inside the historic halls of Oxford, the Queen's dominance is recognized by the city's highest office. Diplomacy over tea.</p>
+                    </div>
+                    <div class="image-reveal-wrapper order-1 md:order-2">
+                        <div class="image-overlay"></div>
+                        <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&q=80" class="rounded-lg shadow-2xl">
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <section class="py-24 bg-black">
-        <div class="max-w-4xl mx-auto text-center px-4">
-            <h2 class="text-4xl mb-8 gold-text">Seminars & Sovereign Talks</h2>
-            <div class="grid gap-6">
-                <div class="p-6 border-l-4 border-[#D4AF37] bg-white/5 text-left italic">
-                    "The Architecture of Influence: How African Matriarchs Shape Global Policy."
+        <section id="gala" class="py-32 bg-white text-black overflow-hidden">
+            <div class="container mx-auto px-8">
+                <div class="text-center mb-20">
+                    <h2 class="text-7xl font-black uppercase tracking-tighter" id="gala-title">The Morning Gala Show</h2>
                 </div>
-                <div class="p-6 border-l-4 border-[#D4AF37] bg-white/5 text-left italic">
-                    "Wealth Preservation: Moving from Riches to Generational Sovereignty."
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4" id="gala-gallery">
+                    <div class="h-[600px] overflow-hidden rounded-xl"><img src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&q=80" class="h-full w-full object-cover hover:scale-110 transition duration-700"></div>
+                    <div class="h-[600px] mt-12 overflow-hidden rounded-xl"><img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&q=80" class="h-full w-full object-cover hover:scale-110 transition duration-700"></div>
+                    <div class="h-[600px] overflow-hidden rounded-xl"><img src="https://images.unsplash.com/photo-1539109132381-31a1b973b001?auto=format&fit=crop&q=80" class="h-full w-full object-cover hover:scale-110 transition duration-700"></div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <footer class="p-12 text-center border-t border-white/10 opacity-60 text-sm tracking-[0.5em]">
-        AFRICAN QUEEN SUMMIT • LONDON • OXFORD • 2026
-    </footer>
+        <section id="food" class="bg-[#043927] py-20">
+            <div class="px-8 mb-10">
+                <h2 class="text-6xl font-black">The Feast of <span class="text-[#D4AF37]">54 Nations</span></h2>
+                <p class="text-emerald-200 uppercase tracking-widest mt-2">Afternoon Gastronomy Congregation</p>
+            </div>
+            
+            <div class="flex gap-10 overflow-x-auto px-8 pb-20 no-scrollbar" id="food-scroller">
+                <div class="min-w-[400px] glass-card p-4 rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1541518763669-27fef04b14ea?auto=format&fit=crop&q=80" class="rounded-xl h-64 w-full object-cover mb-6">
+                    <h3 class="text-2xl font-bold gold-text">Southern Sovereignty</h3>
+                    <p class="text-sm opacity-70 mt-2">Biltong, Braai, and the royal spices of the Cape.</p>
+                </div>
+                <div class="min-w-[400px] glass-card p-4 rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80" class="rounded-xl h-64 w-full object-cover mb-6">
+                    <h3 class="text-2xl font-bold gold-text">Sahara Scents</h3>
+                    <p class="text-sm opacity-70 mt-2">Couscous and Tagines cooked by the matriarchs of the North.</p>
+                </div>
+                <div class="min-w-[400px] glass-card p-4 rounded-2xl">
+                    <img src="https://images.unsplash.com/photo-1547592166-23ac45744acd?auto=format&fit=crop&q=80" class="rounded-xl h-64 w-full object-cover mb-6">
+                    <h3 class="text-2xl font-bold gold-text">West African Fire</h3>
+                    <p class="text-sm opacity-70 mt-2">Unity through Jollof. The sacred wood-fired congregation.</p>
+                </div>
+                <div class="min-w-[400px] flex items-center justify-center italic text-[#D4AF37] border-2 border-dashed border-[#D4AF37]/30 rounded-2xl">
+                    Plus 51 Other National Tastes
+                </div>
+            </div>
+        </section>
+
+        <section class="py-32 px-8">
+            <div class="max-w-4xl mx-auto">
+                <h2 class="text-4xl gold-text mb-12 text-center underline decoration-1 underline-offset-8">Educational Discourse</h2>
+                <div class="space-y-6">
+                    <div class="p-8 border border-white/10 hover:bg-white/5 transition cursor-default group overflow-hidden relative">
+                        <div class="absolute inset-0 bg-emerald-900/20 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500"></div>
+                        <h4 class="text-2xl relative z-10 uppercase tracking-tighter">I. Architectural Dominance</h4>
+                        <p class="text-gray-500 relative z-10 group-hover:text-white transition mt-2">Building physical and digital empires in the heart of Europe.</p>
+                    </div>
+                    <div class="p-8 border border-white/10 hover:bg-white/5 transition cursor-default group overflow-hidden relative">
+                        <div class="absolute inset-0 bg-emerald-900/20 translate-x-[-100%] group-hover:translate-x-0 transition-transform duration-500"></div>
+                        <h4 class="text-2xl relative z-10 uppercase tracking-tighter">II. Sovereign Economics</h4>
+                        <p class="text-gray-500 relative z-10 group-hover:text-white transition mt-2">Legacy, asset protection, and the Queen's treasury.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </div>
 
     <script>
-        // Initialize GSAP
-        gsap.registerPlugin(ScrollTrigger);
+        gsap.registerPlugin(ScrollTrigger, TextPlugin);
 
-        // Hero Animation
-        gsap.from("#hero-text", {
-            duration: 1.5,
-            y: 100,
-            opacity: 0,
-            ease: "power4.out"
+        // 1. Hero Entrance Timeline
+        const tl = gsap.timeline();
+        tl.from("#hero-bg", { scale: 1.5, duration: 2, ease: "power4.out" })
+          .from("#hero-title span", { y: 100, stagger: 0.2, opacity: 0, duration: 1, ease: "power4.out" }, "-=1.5")
+          .to("#hero-sub", { opacity: 1, letterSpacing: "0.5em", duration: 1 }, "-=0.5");
+
+        // 2. The Royal Path (Scroll Line Drawing)
+        gsap.from("#scroll-line", {
+            scaleY: 0,
+            transformOrigin: "top center",
+            scrollTrigger: {
+                trigger: "#itinerary",
+                start: "top center",
+                end: "bottom bottom",
+                scrub: 1
+            }
         });
 
-        // Timeline Items Animation
-        const items = document.querySelectorAll('.reveal-item');
-        items.forEach((item, index) => {
-            gsap.from(item, {
-                scrollTrigger: {
-                    trigger: item,
-                    start: "top 85%",
-                },
-                x: index % 2 === 0 ? -50 : 50,
-                opacity: 0,
-                duration: 1,
-                ease: "power2.out"
+        // 3. Image Overlay Reveal Animation
+        const reveals = document.querySelectorAll('.image-reveal-wrapper');
+        reveals.forEach(wrapper => {
+            const img = wrapper.querySelector('img');
+            const overlay = wrapper.querySelector('.image-overlay');
+            
+            const tr = gsap.timeline({
+                scrollTrigger: { trigger: wrapper, start: "top 70%" }
+            });
+            
+            tr.to(overlay, { xPercent: 100, duration: 1.2, ease: "power2.inOut" })
+              .from(img, { scale: 1.3, duration: 1.2, ease: "power2.inOut" }, "-=1.2");
+        });
+
+        // 4. Gala Gallery Stagger
+        gsap.from("#gala-gallery div", {
+            scrollTrigger: { trigger: "#gala", start: "top 60%" },
+            y: 100,
+            opacity: 0,
+            stagger: 0.2,
+            duration: 1.5,
+            ease: "expo.out"
+        });
+
+        // 5. Food Scroller - Horizontal Stagger
+        gsap.from("#food-scroller div", {
+            scrollTrigger: { trigger: "#food", start: "top 70%" },
+            x: 100,
+            opacity: 0,
+            stagger: 0.1,
+            duration: 1,
+            ease: "power2.out"
+        });
+
+        // 6. Navigation Link interaction
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('mouseenter', () => {
+                gsap.to(link, { color: "#D4AF37", y: -2, duration: 0.2 });
+            });
+            link.addEventListener('mouseleave', () => {
+                gsap.to(link, { color: "white", y: 0, duration: 0.2 });
             });
         });
 
-        // Showcase Animation
-        gsap.from("#showcase-text", {
-            scrollTrigger: {
-                trigger: "#showcase",
-                start: "top 70%",
-            },
-            x: -100,
-            opacity: 0,
-            duration: 1.2
-        });
-
-        gsap.from("#showcase-gallery img", {
-            scrollTrigger: {
-                trigger: "#showcase",
-                start: "top 70%",
-            },
-            scale: 0.8,
-            stagger: 0.3,
-            opacity: 0,
-            duration: 1.2
-        });
     </script>
 </body>
 </html>
